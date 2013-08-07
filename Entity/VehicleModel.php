@@ -1,7 +1,8 @@
 <?php
 namespace Skonsoft\VehicleManagerBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping as ORM,
+    Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * VehicleModel Defines a model of vehicle (3 to 4 places, Big vehicle, bus, Class S,...)
@@ -41,6 +42,18 @@ class VehicleModel
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id", nullable=false)
      */
     private $category;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Skonsoft\VehicleManagerBundle\Entity\Vehicle", mappedBy="vehicle", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $vehicles;
+
+    public function __construct()
+    {
+        $this->vehicles = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -115,6 +128,56 @@ class VehicleModel
     public function setCategory(Category $category)
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Set Vehicle
+     *
+     * @param \Doctrine\Common\Collections\ArrayCollection $vehicles
+     *
+     * @return \Skonsoft\VehicleManagerBundle\Entity\VehicleModel
+     */
+    public function setVehicles(ArrayCollection $vehicles)
+    {
+        $this->vehicles = $vehicles;
+
+        return $this;
+    }
+
+    /**
+     * Get Vehicles
+     *
+     * @return ArrayCollection
+     */
+    public function getVehicles()
+    {
+        return $this->vehicles;
+    }
+
+    /**
+     * @param \Skonsoft\VehicleManagerBundle\Entity\Vehicle $vehicle
+     *
+     * @return \Skonsoft\VehicleManagerBundle\Entity\VehicleModel
+     */
+    public function addVehicle(Vehicle $vehicle)
+    {
+        $vehicle->setVehicleModel($this);
+        $this->vehicles->add($vehicle);
+
+        return $this;
+    }
+
+    /**
+     * @param \Skonsoft\VehicleManagerBundle\Entity\Vehicle $vehicle
+     *
+     * @return \Skonsoft\VehicleManagerBundle\Entity\VehicleModel
+     */
+    public function removeVehicleModel(Vehicle $vehicle)
+    {
+        $this->vehicles->removeElement($vehicle);
+        unset($vehicle);
 
         return $this;
     }
