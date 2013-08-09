@@ -7,10 +7,10 @@ use Doctrine\ORM\Mapping as ORM,
 /**
  * VehicleModel Defines a model of vehicle (3 to 4 places, Big vehicle, bus, Class S,...)
  *
- * @ORM\Table(name="ss_vehicle_manager__vehicle_model")
+ * @ORM\Table(name="ss_vehicle_manager__model")
  * @ORM\Entity
  */
-class VehicleModel
+class Model
 {
     /**
      * @var integer
@@ -44,10 +44,10 @@ class VehicleModel
     private $category;
 
     /**
-     * @var ArrayCollection
+     * @var Vehicles
      *
-     * @ORM\OneToMany(targetEntity="Skonsoft\VehicleManagerBundle\Entity\Vehicle", mappedBy="vehicle", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
+     * @ORM\ManyToMany(targetEntity="Skonsoft\VehicleManagerBundle\Entity\Vehicle", mappedBy="models")
+     * */
     private $vehicles;
 
     public function __construct()
@@ -69,7 +69,8 @@ class VehicleModel
      * Set name
      *
      * @param string $name
-     * @return VehicleModel
+     *
+     * @return \Skonsoft\VehicleManagerBundle\Entity\Model
      */
     public function setName($name)
     {
@@ -92,7 +93,8 @@ class VehicleModel
      * Set description
      *
      * @param string $description
-     * @return VehicleModel
+     *
+     * @return \Skonsoft\VehicleManagerBundle\Entity\Model
      */
     public function setDescription($description)
     {
@@ -123,7 +125,7 @@ class VehicleModel
      *
      * @param \Skonsoft\VehicleManagerBundle\Entity\Category $category
      *
-     * @return \Skonsoft\VehicleManagerBundle\Entity\VehicleModel
+     * @return \Skonsoft\VehicleManagerBundle\Entity\Model
      */
     public function setCategory(Category $category)
     {
@@ -137,7 +139,7 @@ class VehicleModel
      *
      * @param \Doctrine\Common\Collections\ArrayCollection $vehicles
      *
-     * @return \Skonsoft\VehicleManagerBundle\Entity\VehicleModel
+     * @return \Skonsoft\VehicleManagerBundle\Entity\Model
      */
     public function setVehicles(ArrayCollection $vehicles)
     {
@@ -157,13 +159,13 @@ class VehicleModel
     }
 
     /**
-     * @param \Skonsoft\VehicleManagerBundle\Entity\Vehicle $vehicle
+     * @param Skonsoft\VehicleManagerBundle\Entity\Vehicle $vehicle
      *
-     * @return \Skonsoft\VehicleManagerBundle\Entity\VehicleModel
+     * @return \Skonsoft\VehicleManagerBundle\Entity\Model
      */
     public function addVehicle(Vehicle $vehicle)
     {
-        $vehicle->setVehicleModel($this);
+//        $vehicle->setVehicleModel($this);
         $this->vehicles->add($vehicle);
 
         return $this;
@@ -172,12 +174,12 @@ class VehicleModel
     /**
      * @param \Skonsoft\VehicleManagerBundle\Entity\Vehicle $vehicle
      *
-     * @return \Skonsoft\VehicleManagerBundle\Entity\VehicleModel
+     * @return \Skonsoft\VehicleManagerBundle\Entity\Model
      */
-    public function removeVehicleModel(Vehicle $vehicle)
+    public function removeVehicle(Vehicle $vehicle)
     {
         $this->vehicles->removeElement($vehicle);
-        unset($vehicle);
+//        unset($vehicle);
 
         return $this;
     }

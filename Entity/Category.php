@@ -46,13 +46,13 @@ class Category
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Skonsoft\VehicleManagerBundle\Entity\VehicleModel", mappedBy="category", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="Skonsoft\VehicleManagerBundle\Entity\Model", mappedBy="category", cascade={"persist", "remove"}, orphanRemoval=true)
      */
-    private $vehicleModels;
+    private $models;
 
     public function __construct()
     {
-        $this->vehicleModels = new ArrayCollection();
+        $this->models = new ArrayCollection();
     }
 
     /**
@@ -132,15 +132,15 @@ class Category
     }
 
     /**
-     * Set VehicleModels
+     * Set Models
      *
-     * @param \Doctrine\Common\Collections\ArrayCollection $vehicleModels
+     * @param \Doctrine\Common\Collections\ArrayCollection $models
      *
      * @return \Skonsoft\VehicleManagerBundle\Entity\Category
      */
-    public function setVehicleModels(ArrayCollection $vehicleModels)
+    public function setModels(ArrayCollection $models)
     {
-        $this->vehicleModels = $vehicleModels;
+        $this->models = $models;
 
         return $this;
     }
@@ -150,33 +150,33 @@ class Category
      *
      * @return ArrayCollection
      */
-    public function getVehicleModels()
+    public function getModels()
     {
-        return $this->vehicleModels;
+        return $this->models;
     }
 
     /**
-     * @param \Skonsoft\VehicleManagerBundle\Entity\VehicleModel $vehicleModel
+     * @param \Skonsoft\VehicleManagerBundle\Entity\Model $model
      *
      * @return \Skonsoft\VehicleManagerBundle\Entity\Category
      */
-    public function addVehicleModel(VehicleModel $vehicleModel)
+    public function addModel(Model $model)
     {
-        $vehicleModel->setCategory($this);
-        $this->vehicleModels->add($vehicleModel);
+        $model->setCategory($this);
+        $this->models->add($model);
 
         return $this;
     }
 
     /**
-     * @param \Skonsoft\VehicleManagerBundle\Entity\VehicleModel $vehicleModel
+     * @param \Skonsoft\VehicleManagerBundle\Entity\Model $model
      *
      * @return \Skonsoft\VehicleManagerBundle\Entity\Category
      */
-    public function removeVehicleModel(VehicleModel $vehicleModel)
+    public function removeModel(Model $model)
     {
-        $this->vehicleModels->removeElement($vehicleModel);
-        unset($vehicleModel);
+        $this->models->removeElement($model);
+        unset($model);
 
         return $this;
     }

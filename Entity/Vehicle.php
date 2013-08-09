@@ -1,7 +1,8 @@
 <?php
 namespace Skonsoft\VehicleManagerBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping as ORM,
+    Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Vehicle Defines a basic vehicle (car, bus,..)
@@ -37,17 +38,20 @@ class Vehicle
     /**
      * @var string
      *
-     * @ORM\Column(name="registration", type="string", length=255)
+     * @ORM\Column(name="registration", type="string", length=255, unique=true)
      */
     private $registration;
 
     /**
-     * @var VehicleModel
-     *
-     * @ORM\ManyToOne(targetEntity="Skonsoft\VehicleManagerBundle\Entity\VehicleModel")
-     * @ORM\JoinColumn(name="vehicle_model_id", referencedColumnName="id", nullable=false)
-     */
-    private $vehicleModel;
+     * @ORM\ManyToMany(targetEntity="Skonsoft\VehicleManagerBundle\Entity\Model", inversedBy="vehicles")
+     * @ORM\JoinTable(name="ss_vehicle_manager__vehicle_models")
+     * */
+    private $models;
+
+    public function __construct()
+    {
+        $this->models = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -132,23 +136,52 @@ class Vehicle
     }
 
     /**
+     * Set Models
      *
-     * @return \Skonsoft\VehicleManagerBundle\Entity\VehicleModel
-     */
-    public function getVehicleModel()
-    {
-        return $this->vehicleModel;
-    }
-
-    /**
-     *
-     * @param \Skonsoft\VehicleManagerBundle\Entity\VehicleModel $vehicleModel
+     * @param \Doctrine\Common\Collections\ArrayCollection $models
      *
      * @return \Skonsoft\VehicleManagerBundle\Entity\Vehicle
      */
-    public function setVehicleModel(VehicleModel $vehicleModel)
+    public function setModels(ArrayCollection $models)
     {
-        $this->vehicleModel = $vehicleModel;
+        $this->models = $models;
+
+        return $this;
+    }
+
+    /**
+     * Get Models
+     *
+     * @return ArrayCollection
+     */
+    public function getModels()
+    {
+        return $this->models;
+    }
+
+    /**
+     * @param \Skonsoft\VehicleManagerBundle\Entity\Model $model
+     *
+     * @return \Skonsoft\VehicleManagerBundle\Entity\Vehicle
+     */
+    public function addModel(Model $model)
+    {
+        $model->addVehicle($this);
+        $this->models->add($model);
+
+        return $this;
+    }
+
+    /**
+     * @param \Skonsoft\VehicleManagerBundle\Entity\Model $model
+     *
+     * @return \Skonsoft\VehicleManagerBundle\Entity\Vehicle
+     */
+    public function removeModel(Model $model)
+    {
+        $this->models->removeElement($model);
+        unset($model);
+
         return $this;
     }
 
