@@ -36,14 +36,6 @@ class Model
     private $description;
 
     /**
-     * @var Category
-     *
-     * @ORM\ManyToOne(targetEntity="Skonsoft\VehicleManagerBundle\Entity\Category")
-     * @ORM\JoinColumn(name="category_id", referencedColumnName="id", nullable=false)
-     */
-    private $category;
-
-    /**
      * @var Vehicles
      *
      * @ORM\ManyToMany(targetEntity="Skonsoft\VehicleManagerBundle\Entity\Vehicle", mappedBy="models")
@@ -111,27 +103,6 @@ class Model
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * @return \Skonsoft\VehicleManagerBundle\Entity\Category
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
-
-    /**
-     *
-     * @param \Skonsoft\VehicleManagerBundle\Entity\Category $category
-     *
-     * @return \Skonsoft\VehicleManagerBundle\Entity\Model
-     */
-    public function setCategory(Category $category)
-    {
-        $this->category = $category;
-
-        return $this;
     }
 
     /**
